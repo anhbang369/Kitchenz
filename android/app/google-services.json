@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "943317085809",
+    "project_id": "kitchenz-532ee",
+    "storage_bucket": "kitchenz-532ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943317085809:android:02d7b7ae257a542772b5d0",
+        "android_client_info": {
+          "package_name": "com.example.firstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943317085809-h900or19qmgror4gr25t44119lvm62mu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firstapp",
+            "certificate_hash": "3e8d011958e6955095616f9842f523cbf690dba1"
+          }
+        },
+        {
+          "client_id": "943317085809-n0nrnn8914i6ejju9v409pluppalk2oh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYWCS49TXvoCv3XABUOyM7ZrE-NuETTCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943317085809-n0nrnn8914i6ejju9v409pluppalk2oh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
