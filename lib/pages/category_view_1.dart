@@ -22,6 +22,7 @@ class _CategoryView1State extends State<CategoryView1> {
     // TODO: implement initState
     super.initState();
     NetworkRequest1.fetchPosts().then((value) {
+      debugPrint(value.toString());
       setState(() {
         _post.addAll(value);
         _postDisplay = _post;
@@ -44,37 +45,39 @@ class _CategoryView1State extends State<CategoryView1> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Bữa sáng'),
+        title: const Text('Bữa sáng'),
         centerTitle: true,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
             color: Colors.deepOrange,
           ),
         ),
       ),
       body: ListView.builder(
           itemCount: _postDisplay.length + 1,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return index == 0 ? _searchBar() : _listItem(index - 1);
-          }
-      ),
+          }),
     );
   }
 
-  _searchBar(){
+  _searchBar() {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(
-            hintText: 'Tìm ...'
-        ),
-        onChanged: (text){
+        decoration: const InputDecoration(hintText: 'Tìm ...'),
+        onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            _postDisplay = _post.where((postData){
-              var posttile = postData.name?.toLowerCase(); // Add a null check using the null-aware operator '?'
-              return posttile != null && posttile.contains(text); // Check if posttile is not null before calling contains()
+            _postDisplay = _post.where((postData) {
+              var posttile = postData.name
+                  ?.toLowerCase(); // Add a null check using the null-aware operator '?'
+              return posttile != null &&
+                  posttile.contains(
+                      text); // Check if posttile is not null before calling contains()
             }).toList();
           });
         },
@@ -82,13 +85,13 @@ class _CategoryView1State extends State<CategoryView1> {
     );
   }
 
-  _listItem(index){
+  _listItem(index) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: Container(
           decoration: BoxDecoration(
-            color: Color(0xffFAFAFA),
+            color: const Color(0xffFAFAFA),
             borderRadius: BorderRadius.circular(20),
           ),
           width: 365,
@@ -110,12 +113,12 @@ class _CategoryView1State extends State<CategoryView1> {
                       top: 0,
                       left: 0,
                       child: Container(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
                           '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -124,7 +127,7 @@ class _CategoryView1State extends State<CategoryView1> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 100,
                 width: 195,
                 child: Column(
@@ -140,8 +143,8 @@ class _CategoryView1State extends State<CategoryView1> {
                             fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10),
                       child: Text('24 phút'),
                     ),
                     Padding(
@@ -156,28 +159,26 @@ class _CategoryView1State extends State<CategoryView1> {
                 ),
               ),
               FirebaseAuth.instance.currentUser?.uid ==
-                  'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
+                      'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
                   ? Container(
-                margin: EdgeInsets.only(bottom: 80),
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: _toggleFavorite,
-                  splashRadius: 1,
-                ),
-              )
+                      margin: const EdgeInsets.only(bottom: 80),
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: _toggleFavorite,
+                        splashRadius: 1,
+                      ),
+                    )
                   : Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: IconButton(
-                  icon: Icon(
-                    _isFavorited
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: _isFavorited ? Colors.red : Colors.black,
-                  ),
-                  onPressed: _toggleFavorite,
-                  splashRadius: 1,
-                ),
-              ),
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child: IconButton(
+                        icon: Icon(
+                          _isFavorited ? Icons.favorite : Icons.favorite_border,
+                          color: _isFavorited ? Colors.red : Colors.black,
+                        ),
+                        onPressed: _toggleFavorite,
+                        splashRadius: 1,
+                      ),
+                    ),
             ],
           ),
         ),

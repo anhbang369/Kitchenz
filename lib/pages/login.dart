@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'menu.dart';
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -28,15 +29,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -44,11 +45,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       );
 
       final UserCredential authResult =
-      await firebaseAuth.signInWithCredential(credential);
+          await firebaseAuth.signInWithCredential(credential);
 
       final User? user = authResult.user;
 
       if (user != null) {
+        print(user.toString());
+
         // Đăng nhập thành công, trả về thông tin user
         return authResult;
       }
@@ -59,7 +62,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         code: 'ERROR_MISSING_GOOGLE_AUTH_TOKEN',
         message: 'Missing Google Auth Token');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               decoration: InputDecoration(
                 hintText: 'Nhập email của bạn',
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -115,7 +117,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               decoration: InputDecoration(
                 hintText: 'Nhập mật khẩu của bạn',
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -150,13 +152,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 color: Colors.deepOrange,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(child: Text('Đăng nhập', style: TextStyle(color: Colors.white, fontSize: 22),)),
+              child: Center(
+                  child: Text(
+                'Đăng nhập',
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              )),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Container(
-              child: Text('hoặc tiếp tục với', style: TextStyle(fontSize: 17, color: Colors.grey),),
+              child: Text(
+                'hoặc tiếp tục với',
+                style: TextStyle(fontSize: 17, color: Colors.grey),
+              ),
             ),
           ),
           GestureDetector(
@@ -189,23 +198,22 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             padding: const EdgeInsets.all(20),
             child: StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot){
-                if(snapshot.hasData){
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
                   return Menu(title: '');
                 }
-                if(snapshot.connectionState == ConnectionState.waiting){
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
                 return Container(
                   child: Center(
                     child: GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         final newuser = await _googleSignIn.signIn();
                         final googleauth = await newuser!.authentication;
                         final creds = GoogleAuthProvider.credential(
                             accessToken: googleauth.accessToken,
-                            idToken: googleauth.idToken
-                        );
+                            idToken: googleauth.idToken);
                         await FirebaseAuth.instance.signInWithCredential(creds);
                       },
                       child: Container(
@@ -245,7 +253,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ),
             ),
           ),
-
         ],
       ),
     );

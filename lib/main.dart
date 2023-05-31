@@ -13,7 +13,8 @@ import 'package:firstapp/pages/forget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = "pk_test_51N1idNG02NFclnWKxxHOYTXvVFnW2a0OHAyU8U0cX4e21KHcwptaypZ7KDgRa2qe0ElmnQtYGGNbH6Fsc49hgKCt008MfDb74U";
+  Stripe.publishableKey =
+      "pk_test_51N1idNG02NFclnWKxxHOYTXvVFnW2a0OHAyU8U0cX4e21KHcwptaypZ7KDgRa2qe0ElmnQtYGGNbH6Fsc49hgKCt008MfDb74U";
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -163,6 +164,7 @@ class _LoginInState extends State<LoginIn> {
                       email: _emailEditingController.text,
                       password: _passwordEditingController.text)
                   .then((value) {
+                print(value.toString());
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Menu(title: '')));
               }).catchError((e) {
@@ -238,7 +240,8 @@ class _LoginInState extends State<LoginIn> {
               onPressed: () async {
                 await FirebaseService().signInWithGoogle();
                 if (FirebaseAuth.instance.currentUser != null) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Menu(title: '')));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Menu(title: '')));
                 } else {
                   // Yêu cầu người dùng đăng nhập trước khi chuyển đến trang chủ
                   // ...
@@ -365,5 +368,3 @@ class _LoginInState extends State<LoginIn> {
     });
   }*/
 }
-
-
