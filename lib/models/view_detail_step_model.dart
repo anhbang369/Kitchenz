@@ -9,8 +9,8 @@ class ViewDetailStepModel {
   factory ViewDetailStepModel.fromJson(Map<String, dynamic> json) {
     return ViewDetailStepModel(
       id: json['id'],
-      title: json['title'],
-      script: json['script'],
+      title: 'title',
+      script: json['description'],
     );
   }
 }

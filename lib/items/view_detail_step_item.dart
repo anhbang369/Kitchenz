@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ViewDetailStepItem extends StatelessWidget {
-  final String id;
+  final int id;
   final String title;
   final String script;
   const ViewDetailStepItem(this.id, this.title, this.script, {super.key});

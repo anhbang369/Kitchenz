@@ -24,9 +24,8 @@ class Dish {
   factory Dish.fromJson(Map<String, dynamic> json) {
     // Check if json['steps']['status'] not deactive
     json['steps'] = json['steps']
-        .where((step) => step['status'] != 'DEACTIVE' && step['status'] != 'REMOVE')
+        .where((step) => step['status'] == 'ACTIVE')
         .toList(growable: false);
-    print(json['steps']);
     return Dish(
       id: json['id'],
       name: json['name'],

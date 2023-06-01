@@ -11,7 +11,6 @@ class ApiService {
     final response = await http.get(Uri.parse('$_baseUrl/dish/$id'));
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.bodyBytes));
-      print(data);
       return Dish.fromJson(data);
     } else {
       throw Exception('Failed to load dish');

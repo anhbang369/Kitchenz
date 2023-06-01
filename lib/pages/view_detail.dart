@@ -124,15 +124,15 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            //   child: Column(
-            //     children: STEP_DATA
-            //         .map((item) =>
-            //             ViewDetailStepItem(item.id, item.title, item.script))
-            //         .toList(),
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: Column(
+                children: dish.steps
+                    .map((item) =>
+                        ViewDetailStepItem(item.id, item.title, item.script))
+                    .toList(),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: InkWell(
