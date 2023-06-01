@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../items/category_view_item.dart';
 import '../models/category_view_model.dart';
 
 class ManageRecipe extends StatefulWidget {

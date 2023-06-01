@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/category_model.dart';
-import '../items/category_item.dart';
 import 'category_view.dart';
 import 'category_view_1.dart';
 import 'category_view_2.dart';

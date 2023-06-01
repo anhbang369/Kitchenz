@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class HomeAdviceModel{
   final String id;

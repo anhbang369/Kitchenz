@@ -72,7 +72,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             padding: const EdgeInsets.only(top: 100, bottom: 50),
             child: Container(
               height: 100,
-              child: Column(
+              child: const Column(
                 children: [
                   Center(
                     child: Text(
@@ -84,7 +84,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: 10),
                     child: Center(
                       child: Text(
                         'Chào mừng lại đã trở lại.',
@@ -102,13 +102,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               decoration: InputDecoration(
                 hintText: 'Nhập email của bạn',
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                suffixIcon: Icon(Icons.mail),
+                suffixIcon: const Icon(Icons.mail),
               ),
-              style: TextStyle(fontSize: 17, height: 2),
+              style: const TextStyle(fontSize: 17, height: 2),
             ),
           ),
           Padding(
@@ -117,13 +117,13 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               decoration: InputDecoration(
                 hintText: 'Nhập mật khẩu của bạn',
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                suffixIcon: Icon(Icons.lock),
+                suffixIcon: const Icon(Icons.lock),
               ),
-              style: TextStyle(fontSize: 17, height: 2),
+              style: const TextStyle(fontSize: 17, height: 2),
             ),
           ),
           Padding(
@@ -138,9 +138,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     });
                   },
                 ),
-                Text('Nhớ mật khẩu'),
-                Spacer(),
-                Text('Quên mật khẩu'),
+                const Text('Nhớ mật khẩu'),
+                const Spacer(),
+                const Text('Quên mật khẩu'),
               ],
             ),
           ),
@@ -152,7 +152,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 color: Colors.deepOrange,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
+              child: const Center(
                   child: Text(
                 'Đăng nhập',
                 style: TextStyle(color: Colors.white, fontSize: 22),
@@ -162,7 +162,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Container(
-              child: Text(
+              child: const Text(
                 'hoặc tiếp tục với',
                 style: TextStyle(fontSize: 17, color: Colors.grey),
               ),
@@ -182,10 +182,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 width: 35,
                 height: 35,
                 decoration: BoxDecoration(
-                  color: Color(0xffF5F6F9),
+                  color: const Color(0xffF5F6F9),
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Image(
+                child: const Image(
                   width: 35,
                   height: 35,
                   image: NetworkImage(
@@ -200,35 +200,33 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Menu(title: '');
+                  return const Menu(title: '');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
-                return Container(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () async {
-                        final newuser = await _googleSignIn.signIn();
-                        final googleauth = await newuser!.authentication;
-                        final creds = GoogleAuthProvider.credential(
-                            accessToken: googleauth.accessToken,
-                            idToken: googleauth.idToken);
-                        await FirebaseAuth.instance.signInWithCredential(creds);
-                      },
-                      child: Container(
+                return Center(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final newuser = await _googleSignIn.signIn();
+                      final googleauth = await newuser!.authentication;
+                      final creds = GoogleAuthProvider.credential(
+                          accessToken: googleauth.accessToken,
+                          idToken: googleauth.idToken);
+                      await FirebaseAuth.instance.signInWithCredential(creds);
+                    },
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF5F6F9),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Image(
                         width: 35,
                         height: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xffF5F6F9),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Image(
-                          width: 35,
-                          height: 35,
-                          image: NetworkImage(
-                              'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png'),
-                        ),
+                        image: NetworkImage(
+                            'https://i.pinimg.com/originals/74/65/f3/7465f30319191e2729668875e7a557f2.png'),
                       ),
                     ),
                   ),
@@ -239,7 +237,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           Align(
             alignment: Alignment.center,
             child: Container(
-              child: Row(
+              child: const Row(
                 children: [
                   Text(
                     'Không có tài khoản?',

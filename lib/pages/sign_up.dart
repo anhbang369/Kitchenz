@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firstapp/pages/home.dart';
 import 'package:flutter/material.dart';
 import '../pages/verify_email.dart';
 

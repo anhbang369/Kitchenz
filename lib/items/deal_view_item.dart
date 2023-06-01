@@ -9,8 +9,8 @@ class DealViewItem extends StatefulWidget {
   final String script;
   final String meal;
 
-  const DealViewItem(this.id, this.title, this.image, this.time, this.script,
-      this.meal);
+  const DealViewItem(
+      this.id, this.title, this.image, this.time, this.script, this.meal);
 
   @override
   _DealViewItemState createState() => _DealViewItemState();
@@ -31,17 +31,20 @@ class _DealViewItemState extends State<DealViewItem> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ViewDetail()),
+          MaterialPageRoute(
+              builder: (context) => ViewDetail(
+                    id: int.parse(widget.id),
+                  )),
         );
       },
       child: Container(
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xffFAFAFA),
+                  color: const Color(0xffFAFAFA),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 width: 365,
@@ -52,8 +55,7 @@ class _DealViewItemState extends State<DealViewItem> {
                       height: 108,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(
-                              widget.image),
+                          image: NetworkImage(widget.image),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(20),
@@ -64,7 +66,7 @@ class _DealViewItemState extends State<DealViewItem> {
                             top: 0,
                             left: 0,
                             child: Container(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Text(
                                 widget.meal,
                                 maxLines: 1,
@@ -93,7 +95,6 @@ class _DealViewItemState extends State<DealViewItem> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 17),
                             ),
-
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
@@ -102,7 +103,7 @@ class _DealViewItemState extends State<DealViewItem> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
-                                widget.script,
+                              widget.script,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -111,7 +112,7 @@ class _DealViewItemState extends State<DealViewItem> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: IconButton(
                         icon: Icon(
                           _isFavorited ? Icons.favorite : Icons.favorite_border,

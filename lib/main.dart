@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firstapp/service/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../pages/sign_up.dart';
@@ -30,7 +27,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginIn(),
+      // Check if the user is logged in
+
+      home: FirebaseAuth.instance.currentUser == null
+          ? LoginIn()
+          : const Menu(title: ''),
     );
   }
 }
@@ -64,9 +65,9 @@ class _LoginInState extends State<LoginIn> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 100, bottom: 50),
-            child: Container(
+          const Padding(
+            padding: EdgeInsets.only(top: 100, bottom: 50),
+            child: SizedBox(
               height: 100,
               child: Column(
                 children: [
@@ -80,7 +81,7 @@ class _LoginInState extends State<LoginIn> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: 10),
                     child: Center(
                       child: Text(
                         'Chào mừng lại đã trở lại.',
@@ -99,13 +100,13 @@ class _LoginInState extends State<LoginIn> {
               decoration: InputDecoration(
                 hintText: 'Nhập email của bạn',
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                suffixIcon: Icon(Icons.mail),
+                suffixIcon: const Icon(Icons.mail),
               ),
-              style: TextStyle(fontSize: 17, height: 2),
+              style: const TextStyle(fontSize: 17, height: 2),
             ),
           ),
           Padding(
@@ -115,13 +116,13 @@ class _LoginInState extends State<LoginIn> {
               decoration: InputDecoration(
                 hintText: 'Nhập mật khẩu của bạn',
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                suffixIcon: Icon(Icons.lock),
+                suffixIcon: const Icon(Icons.lock),
               ),
-              style: TextStyle(fontSize: 17, height: 2),
+              style: const TextStyle(fontSize: 17, height: 2),
             ),
           ),
           Padding(
@@ -136,16 +137,17 @@ class _LoginInState extends State<LoginIn> {
                     });
                   },
                 ),
-                Text('Nhớ mật khẩu'),
-                Spacer(),
+                const Text('Nhớ mật khẩu'),
+                const Spacer(),
                 InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FogetPassword()),
+                      MaterialPageRoute(
+                          builder: (context) => const FogetPassword()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Quên mật khẩu',
                     style: TextStyle(
                       color: Colors.deepOrange,
@@ -164,9 +166,10 @@ class _LoginInState extends State<LoginIn> {
                       email: _emailEditingController.text,
                       password: _passwordEditingController.text)
                   .then((value) {
-                print(value.toString());
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Menu(title: '')));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Menu(title: '')));
               }).catchError((e) {
                 Fluttertoast.showToast(
                     msg: "Vui lòng kiểm tra lại email và mật khẩu.",
@@ -182,7 +185,7 @@ class _LoginInState extends State<LoginIn> {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Container(
-              child: Text(
+              child: const Text(
                 'hoặc tiếp tục với',
                 style: TextStyle(fontSize: 17, color: Colors.grey),
               ),
@@ -235,13 +238,15 @@ class _LoginInState extends State<LoginIn> {
             },
           ),*/
           Container(
-            margin: EdgeInsets.symmetric(vertical: 30, horizontal: 0),
+            margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 0),
             child: ElevatedButton(
               onPressed: () async {
                 await FirebaseService().signInWithGoogle();
                 if (FirebaseAuth.instance.currentUser != null) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Menu(title: '')));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Menu(title: '')));
                 } else {
                   // Yêu cầu người dùng đăng nhập trước khi chuyển đến trang chủ
                   // ...
@@ -258,10 +263,10 @@ class _LoginInState extends State<LoginIn> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                    color: Color(0xffF5F6F9),
+                    color: const Color(0xffF5F6F9),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Image(
+                  child: const Image(
                     width: 35,
                     height: 35,
                     image: NetworkImage(
@@ -277,7 +282,7 @@ class _LoginInState extends State<LoginIn> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Không có tài khoản?',
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -286,10 +291,10 @@ class _LoginInState extends State<LoginIn> {
                       // Xử lý sự kiện chuyển sang trang SignUp ở đây
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUp()),
+                        MaterialPageRoute(builder: (context) => const SignUp()),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Tạo tài khoản?',
                       style: TextStyle(color: Colors.deepOrange),
                     ),
@@ -303,14 +308,14 @@ class _LoginInState extends State<LoginIn> {
     );
   }
 
-  Container signUpButton(BuildContext context, bool isLogin, Function ontap) {
-    return Container(
+  Widget signUpButton(BuildContext context, bool isLogin, Function ontap) {
+    return SizedBox(
       height: 60,
       child: ElevatedButton(
         onPressed: () {
           ontap();
         },
-        child: Center(
+        child: const Center(
           child: Text(
             'Đăng nhập',
             style: TextStyle(color: Colors.white, fontSize: 20),
