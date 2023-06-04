@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../model/category_post.dart';
+import '../models/category_post_view_model.dart';
 import '../network/NetworkRequest.dart';
 
 class CategoryView3 extends StatefulWidget {
@@ -14,8 +14,8 @@ class CategoryView3 extends StatefulWidget {
 }
 
 class _CategoryView3State extends State<CategoryView3> {
-  List<ViewCategoryPost> _post = [];
-  List<ViewCategoryPost> _postDisplay = [];
+  List<CategoryPostViewModel> _post = [];
+  List<CategoryPostViewModel> _postDisplay = [];
 
   @override
   void initState() {
@@ -48,33 +48,35 @@ class _CategoryView3State extends State<CategoryView3> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
             color: Colors.deepOrange,
           ),
         ),
       ),
       body: ListView.builder(
           itemCount: _postDisplay.length + 1,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return index == 0 ? _searchBar() : _listItem(index - 1);
-          }
-      ),
+          }),
     );
   }
 
-  _searchBar(){
+  _searchBar() {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(
-            hintText: 'Tìm ...'
-        ),
-        onChanged: (text){
+        decoration: InputDecoration(hintText: 'Tìm ...'),
+        onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            _postDisplay = _post.where((postData){
-              var posttile = postData.name?.toLowerCase(); // Add a null check using the null-aware operator '?'
-              return posttile != null && posttile.contains(text); // Check if posttile is not null before calling contains()
+            _postDisplay = _post.where((postData) {
+              var posttile = postData.name
+                  ?.toLowerCase(); // Add a null check using the null-aware operator '?'
+              return posttile != null &&
+                  posttile.contains(
+                      text); // Check if posttile is not null before calling contains()
             }).toList();
           });
         },
@@ -82,7 +84,7 @@ class _CategoryView3State extends State<CategoryView3> {
     );
   }
 
-  _listItem(index){
+  _listItem(index) {
     return Card(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -156,28 +158,26 @@ class _CategoryView3State extends State<CategoryView3> {
                 ),
               ),
               FirebaseAuth.instance.currentUser?.uid ==
-                  'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
+                      'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
                   ? Container(
-                margin: EdgeInsets.only(bottom: 80),
-                child: IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: _toggleFavorite,
-                  splashRadius: 1,
-                ),
-              )
+                      margin: EdgeInsets.only(bottom: 80),
+                      child: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: _toggleFavorite,
+                        splashRadius: 1,
+                      ),
+                    )
                   : Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: IconButton(
-                  icon: Icon(
-                    _isFavorited
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: _isFavorited ? Colors.red : Colors.black,
-                  ),
-                  onPressed: _toggleFavorite,
-                  splashRadius: 1,
-                ),
-              ),
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: IconButton(
+                        icon: Icon(
+                          _isFavorited ? Icons.favorite : Icons.favorite_border,
+                          color: _isFavorited ? Colors.red : Colors.black,
+                        ),
+                        onPressed: _toggleFavorite,
+                        splashRadius: 1,
+                      ),
+                    ),
             ],
           ),
         ),

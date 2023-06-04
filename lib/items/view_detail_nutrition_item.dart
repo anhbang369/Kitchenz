@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
 
 class ViewDetailNutritionItem extends StatelessWidget {
-  final String id;
+  final int id;
   final String title;
-  final int amount;
-  ViewDetailNutritionItem(this.id, this.title, this.amount);
+  final double amount;
+  const ViewDetailNutritionItem(this.id, this.title, this.amount, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xffFAFAFA),
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Row(
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(title),
             ),
           ),
-          SizedBox(width: 35),
+          const Spacer(),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(right: 20),
               child: Text(amount.toString()),
             ),
           ),
         ],
       ),
-      decoration: BoxDecoration(
-        color: Color(0xffFAFAFA),
-        borderRadius: BorderRadius.circular(15),
-      ),
     );
-
   }
 }

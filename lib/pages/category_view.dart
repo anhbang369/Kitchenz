@@ -1,33 +1,39 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firstapp/models/category_model.dart';
 import 'package:firstapp/pages/view_detail.dart';
+import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
 
-import '../model/category_post.dart';
-import '../network/NetworkRequest.dart';
+import '../models/category_post_view_model.dart';
 
 class CategoryView extends StatefulWidget {
-  const CategoryView({Key? key}) : super(key: key);
+  const CategoryView({Key? key, required this.category}) : super(key: key);
+  final CategoryModel category;
 
   @override
   State<CategoryView> createState() => _CategoryViewState();
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  List<ViewCategoryPost> _post = [];
-  List<ViewCategoryPost> _postDisplay = [];
+  final List<CategoryPostViewModel> _post = [];
+  List<CategoryPostViewModel> _postDisplay = [];
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
-    NetworkRequest.fetchPosts().then((value) {
+    ApiService.fetchDishOfCategory(widget.category.id).then((value) {
       setState(() {
         _post.addAll(value);
         _postDisplay = _post;
       });
     });
+    super.initState();
+
+    // NetworkRequest.fetchPosts().then((value) {
+    //   setState(() {
+    //     _post.addAll(value);
+    //     _postDisplay = _post;
+    //   });
+    // });
   }
 
   bool _isFavorited = false;
@@ -45,7 +51,7 @@ class _CategoryViewState extends State<CategoryView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Bữa sáng'),
+        title: Text(widget.category.name),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -136,7 +142,7 @@ class _CategoryViewState extends State<CategoryView> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 100,
                   width: 195,
                   child: Column(
@@ -145,7 +151,7 @@ class _CategoryViewState extends State<CategoryView> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          utf8.decode(_postDisplay[index].name!.codeUnits),
+                          _postDisplay[index].name!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -159,8 +165,7 @@ class _CategoryViewState extends State<CategoryView> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          utf8.decode(
-                              _postDisplay[index].description!.codeUnits),
+                          _postDisplay[index].description ?? '',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),

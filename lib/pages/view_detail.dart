@@ -1,11 +1,8 @@
 import 'package:firstapp/models/dish_model.dart';
 import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
-import '../models/view_detail_nutrition_model.dart';
 import '../items/view_detail_nutrition_item.dart';
-import '../models/view_detail_ingredient_model.dart';
 import '../items/view_detail_ingredient_item.dart';
-import '../models/view_detail_step_model.dart';
 import '../items/view_detail_step_item.dart';
 import '../pages/comment.dart';
 
@@ -28,7 +25,7 @@ class _ViewDetailState extends State<ViewDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FutureBuilder<Dish>(
+      body: FutureBuilder<DishModel>(
         future: ApiService.fetchDishDetail(widget.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -43,7 +40,7 @@ class _ViewDetailState extends State<ViewDetail> {
   }
 }
 
-Widget buildDishDetail(BuildContext context, Dish dish) {
+Widget buildDishDetail(BuildContext context, DishModel dish) {
   return CustomScrollView(
     slivers: [
       SliverAppBar(
@@ -82,6 +79,7 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
               margin: const EdgeInsets.only(left: 20, right: 20),
               child: Text(
                 dish.description,
+                // ignore: prefer_const_constructors
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -96,10 +94,14 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
                 ),
-                children: NUTRITION_DATA
-                    .map((item) => ViewDetailNutritionItem(
-                        item.id, item.title, item.amount))
-                    .toList(),
+                children: dish.nutritionDishs.map((item) {
+                  // Check if item.name is not empty, if empty return zero size container
+                  if (item.name.isNotEmpty) {
+                    return ViewDetailNutritionItem(
+                        item.id, item.name, item.amount);
+                  }
+                  return Container();
+                }).toList(),
               ),
             ),
             const Padding(
@@ -110,18 +112,20 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
               ),
             ),
             Column(
-              children: INGREDIENT_DATA
-                  .map((item) => ViewDetailIngredientItem(
-                      item.id, item.title, item.amount))
-                  .toList(),
+              children: dish.ingredientDishs.map((item) {
+                // Check if item.name is not empty, if empty return zero size container
+                if (item.name.isNotEmpty) {
+                  return ViewDetailIngredientItem(
+                      item.id, item.name, item.amount, item.unit);
+                }
+                return Container();
+              }).toList(),
             ),
-            Container(
-              child: const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'Các bước hướng dẫn',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Các bước hướng dẫn',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
             Padding(
@@ -150,8 +154,8 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
                   ),
                   child: const Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 5),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 5),
                       child: Text(
                         'Xem các bình luận',
                         style: TextStyle(fontSize: 22, color: Colors.white),
@@ -168,21 +172,21 @@ Widget buildDishDetail(BuildContext context, Dish dish) {
   );
 }
 
-const NUTRITION_DATA = [
-  ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
-  ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
-  ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
-];
-const INGREDIENT_DATA = [
-  ViewDetailIngredientModel(id: '1', title: 'Xương ống bò', amount: '20gam'),
-  ViewDetailIngredientModel(id: '1', title: 'Bánh phở', amount: '20gam'),
-  ViewDetailIngredientModel(id: '1', title: 'Bò viên', amount: '20gam'),
-  ViewDetailIngredientModel(
-      id: '1', title: 'Hành tím, hành là, hành tây', amount: '20gam'),
-  ViewDetailIngredientModel(id: '1', title: 'Chanh, rừng', amount: '20gam'),
-  ViewDetailIngredientModel(
-      id: '1', title: 'Đinh hương, hoa hồi, thảo quả', amount: '20gam'),
-];
+// const NUTRITION_DATA = [
+//   ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
+//   ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
+//   ViewDetailNutritionModel(id: '1', title: 'Chất béo', amount: 20),
+// ];
+// const INGREDIENT_DATA = [
+//   ViewDetailIngredientModel(id: '1', title: 'Xương ống bò', amount: '20gam'),
+//   ViewDetailIngredientModel(id: '1', title: 'Bánh phở', amount: '20gam'),
+//   ViewDetailIngredientModel(id: '1', title: 'Bò viên', amount: '20gam'),
+//   ViewDetailIngredientModel(
+//       id: '1', title: 'Hành tím, hành là, hành tây', amount: '20gam'),
+//   ViewDetailIngredientModel(id: '1', title: 'Chanh, rừng', amount: '20gam'),
+//   ViewDetailIngredientModel(
+//       id: '1', title: 'Đinh hương, hoa hồi, thảo quả', amount: '20gam'),
+// ];
 // const STEP_DATA = [
 //   ViewDetailStepModel(
 //       id: '1',

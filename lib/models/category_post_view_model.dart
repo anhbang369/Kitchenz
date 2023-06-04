@@ -1,4 +1,4 @@
-class ViewCategoryPost {
+class CategoryPostViewModel {
   int? id;
   String? name;
   String? description;
@@ -6,9 +6,9 @@ class ViewCategoryPost {
   double? duration;
   String? status;
   String? imageUrl;
-  String? isVip;
+  bool? isVip;
 
-  ViewCategoryPost({
+  CategoryPostViewModel({
     this.id,
     this.name,
     this.description,
@@ -19,12 +19,12 @@ class ViewCategoryPost {
     this.isVip,
   });
 
-  ViewCategoryPost.fromJson(Map<String, dynamic> json) {
+  CategoryPostViewModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
     viewNumber = json['viewNumber'];
-    duration = json['duration'];
+    duration = double.parse(json['duration']);
     status = json['status'];
     imageUrl = json['imageUrl'];
     isVip = json['isVip'];

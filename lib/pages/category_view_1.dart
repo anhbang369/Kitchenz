@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../model/category_post.dart';
+import '../models/category_post_view_model.dart';
 import '../network/NetworkRequest.dart';
 
 class CategoryView1 extends StatefulWidget {
@@ -14,8 +14,8 @@ class CategoryView1 extends StatefulWidget {
 }
 
 class _CategoryView1State extends State<CategoryView1> {
-  List<ViewCategoryPost> _post = [];
-  List<ViewCategoryPost> _postDisplay = [];
+  List<CategoryPostViewModel> _post = [];
+  List<CategoryPostViewModel> _postDisplay = [];
 
   @override
   void initState() {

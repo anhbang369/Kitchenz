@@ -1,18 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firstapp/model/category_post.dart';
+import 'package:firstapp/models/category_post_view_model.dart';
 import 'package:firstapp/network/NetworkRequest.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class CategoryViewItem extends StatefulWidget {
-
   @override
   _DealViewItemState createState() => _DealViewItemState();
 }
 
 class _DealViewItemState extends State<CategoryViewItem> {
-  List<ViewCategoryPost> postData = [];
-  List<ViewCategoryPost> postDisplay = [];
+  List<CategoryPostViewModel> postData = [];
+  List<CategoryPostViewModel> postDisplay = [];
 
   @override
   void initState() {
@@ -42,7 +41,7 @@ class _DealViewItemState extends State<CategoryViewItem> {
       height: 500,
       child: ListView.builder(
           itemCount: postData.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               child: Container(
@@ -106,7 +105,8 @@ class _DealViewItemState extends State<CategoryViewItem> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
-                              utf8.decode(postDisplay[index].description!.codeUnits),
+                              utf8.decode(
+                                  postDisplay[index].description!.codeUnits),
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -115,34 +115,33 @@ class _DealViewItemState extends State<CategoryViewItem> {
                       ),
                     ),
                     FirebaseAuth.instance.currentUser?.uid ==
-                        'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
+                            'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
                         ? Container(
-                      margin: EdgeInsets.only(bottom: 80),
-                      child: IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: _toggleFavorite,
-                        splashRadius: 1,
-                      ),
-                    )
+                            margin: EdgeInsets.only(bottom: 80),
+                            child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: _toggleFavorite,
+                              splashRadius: 1,
+                            ),
+                          )
                         : Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: IconButton(
-                        icon: Icon(
-                          _isFavorited
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: _isFavorited ? Colors.red : Colors.black,
-                        ),
-                        onPressed: _toggleFavorite,
-                        splashRadius: 1,
-                      ),
-                    ),
+                            margin: EdgeInsets.only(bottom: 20),
+                            child: IconButton(
+                              icon: Icon(
+                                _isFavorited
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: _isFavorited ? Colors.red : Colors.black,
+                              ),
+                              onPressed: _toggleFavorite,
+                              splashRadius: 1,
+                            ),
+                          ),
                   ],
                 ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }

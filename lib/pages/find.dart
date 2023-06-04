@@ -1,21 +1,40 @@
+import 'package:firstapp/models/ingredient_model.dart';
+import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FindPage extends StatefulWidget {
+  const FindPage({super.key});
+
   @override
   _FindPageState createState() => _FindPageState();
 }
 
 class _FindPageState extends State<FindPage> {
-  List<TextEditingController> listController = [TextEditingController()];
-  int inputCount = 0;
+  int inputCount = 1;
+  List<IngredientModel?> selectedIngredientList = [];
+  List<IngredientModel> ingredientList = [];
 
-  // Hàm xóa TextField thứ i
-  void removeTextField(int i) {
+  Future<void> loadData() async {
+    await ApiService.fetchIngredientList().then((value) {
+      setState(() {
+        ingredientList = value;
+      });
+    });
+  }
+
+  void removeTextField(int index) {
     setState(() {
-      listController.removeAt(i);
+      selectedIngredientList.removeAt(index);
       inputCount--;
     });
+  }
+
+  @override
+  void initState() {
+    selectedIngredientList.add(null);
+    super.initState();
+    loadData();
   }
 
   @override
@@ -24,12 +43,14 @@ class _FindPageState extends State<FindPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Tìm theo nguyên liệu'),
+        title: const Text('Tìm theo nguyên liệu'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
             color: Colors.deepOrange,
           ),
         ),
@@ -45,63 +66,11 @@ class _FindPageState extends State<FindPage> {
               ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 shrinkWrap: true,
-                itemCount: listController.length,
+                itemCount: inputCount,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 15),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            height: 60,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              controller: listController[index],
-                              autofocus: false,
-                              style: const TextStyle(color: Color(0xFFF8F8FF)),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Tên nguyên liệu",
-                                hintStyle: TextStyle(
-                                    color: Color.fromARGB(255, 132, 140, 155)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        index != 0
-                            ? GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    listController[index].clear();
-                                    listController[index].dispose();
-                                    listController.removeAt(index);
-                                  });
-                                },
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Color(0xFF6B74D6),
-                                    size: 35,
-                                  ),
-                                  onPressed: () {
-                                    if (listController.length > 0) {
-                                      removeTextField(
-                                          listController.length - 1);
-                                    }
-                                  },
-                                ),
-                              )
-                            : const SizedBox()
-                      ],
-                    ),
+                    child: buildIngredientSelect(index),
                   );
                 },
               ),
@@ -110,10 +79,10 @@ class _FindPageState extends State<FindPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (inputCount < 3) {
+                  if (inputCount < 4) {
                     // kiểm tra giá trị biến đếm
                     setState(() {
-                      listController.add(TextEditingController());
+                      selectedIngredientList.add(null);
                       inputCount++; // tăng biến đếm lên một đơn vị sau khi thêm input mới
                     });
                   } else {
@@ -129,37 +98,29 @@ class _FindPageState extends State<FindPage> {
                 },
                 child: Center(
                   child: Container(
-                      width: 310,
-                      height: 60,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                          color: Colors.deepPurple,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Thêm nguyên liệu",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      )),
+                    width: 310,
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                        color: Colors.deepPurple,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Thêm nguyên liệu",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(
                 width: 10,
               ),
               GestureDetector(
-                onTap: () {
-                  final List<String> inputValues = listController
-                      .map((controller) => controller.text)
-                      .toList();
-                  Navigator.pushNamed(
-                    context,
-                    '/recipe',
-                    arguments: inputValues,
-                  );
-                },
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Center(
@@ -187,6 +148,66 @@ class _FindPageState extends State<FindPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Row buildIngredientSelect(int index) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 60,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: DropdownButton<IngredientModel?>(
+              isExpanded: true,
+              hint: const Text('Chọn nguyên liệu'),
+              value: selectedIngredientList[index],
+              items: ingredientList.map((value) {
+                // Skip value if it is already selected
+
+                return DropdownMenuItem<IngredientModel?>(
+                  value: value,
+                  child: Text(value.name),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedIngredientList[index] = value;
+                });
+              },
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        index != 0
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    removeTextField(index);
+                  });
+                },
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Color(0xFF6B74D6),
+                    size: 35,
+                  ),
+                  onPressed: () {
+                    if (selectedIngredientList.length > 1) {
+                      removeTextField(index);
+                    }
+                  },
+                ),
+              )
+            : const SizedBox(),
+      ],
     );
   }
 }

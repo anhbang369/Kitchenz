@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import '../pages/category_view.dart';
 
 class CategoryItem extends StatelessWidget {
   final String id;
   final String title;
   final String method;
   final String image;
-  CategoryItem(this.id, this.title, this.method, this.image);
+  const CategoryItem(this.id, this.title, this.method, this.image, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CategoryView(),
-          ),
-        );
-      },
+      // onTap: () {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => CategoryView(),
+      //     ),
+      //   );
+      // },
       child: Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
@@ -26,8 +25,7 @@ class CategoryItem extends StatelessWidget {
               image: NetworkImage(image),
               fit: BoxFit.cover,
             ),
-            borderRadius: BorderRadius.circular(15)
-        ),
+            borderRadius: BorderRadius.circular(15)),
         child: Stack(
           children: [
             Column(
@@ -35,7 +33,7 @@ class CategoryItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 20,color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             ),
@@ -58,6 +56,5 @@ class CategoryItem extends StatelessWidget {
         ),
       ),
     );
-
   }
 }
