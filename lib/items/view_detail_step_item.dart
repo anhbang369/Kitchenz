@@ -22,7 +22,7 @@ class ViewDetailStepItem extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Text(
-                  title,
+                  "Bước $title",
                   style: const TextStyle(
                       fontSize: 21, fontWeight: FontWeight.bold),
                 ),

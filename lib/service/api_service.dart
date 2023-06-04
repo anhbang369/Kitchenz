@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firstapp/models/category_post_view_model.dart';
 import 'package:firstapp/models/category_model.dart';
@@ -135,6 +136,21 @@ class ApiService {
   // Get top 5 dish
   static Future<List<DishModel>> getTop5Dish() async {
     final response = await http.get(Uri.parse('$_baseUrl/dish/get-top-5'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.body.runes.toList()));
+      return List<DishModel>.from(data.map((json) => DishModel.fromJson(json)));
+    } else {
+      throw Exception('Failed to load dish');
+    }
+  }
+
+  // Get dish by ingredient id
+  static Future<List<DishModel>> getDishByIngredientId(List<int> ids) async {
+    final idList = ids.join(',');
+    final uri = Uri.http(_baseUrl, "/ingredient/search",
+        jsonEncode(idList) as Map<String, dynamic>?);
+    final header = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final response = await http.get(uri, headers: header);
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.body.runes.toList()));
       return List<DishModel>.from(data.map((json) => DishModel.fromJson(json)));

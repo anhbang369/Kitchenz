@@ -131,11 +131,13 @@ Widget buildDishDetail(BuildContext context, DishModel dish) {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
               child: Column(
-                children: dish.steps
-                    .map((item) =>
-                        ViewDetailStepItem(item.id, item.title, item.script))
-                    .toList(),
-              ),
+                  children: List.generate(dish.steps.length, (index) {
+                return ViewDetailStepItem(
+                  dish.steps[index].id,
+                  (index + 1).toString(),
+                  dish.steps[index].script,
+                );
+              })),
             ),
             Padding(
               padding: const EdgeInsets.all(20),

@@ -28,9 +28,9 @@ class DishModel {
 
   factory DishModel.fromJson(Map<String, dynamic> json) {
     // Check if json['steps']['status'] not deactive
-    json['steps'] = json['steps']
-        .where((step) => step['status'] == 'ACTIVE')
-        .toList(growable: false);
+    // json['steps'] = json['steps']
+    //     .where((step) => step['status'] == 'ACTIVE')
+    //     .toList(growable: false);
     return DishModel(
       id: json['id'],
       name: json['name'],
