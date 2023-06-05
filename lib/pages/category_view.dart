@@ -126,15 +126,16 @@ class _CategoryViewState extends State<CategoryView> {
                     children: [
                       Positioned(
                         top: 0,
-                        left: 0,
+                        right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          child: const Text(
-                            '',
+                          child: Text(
+                            _postDisplay[index].isVip == true ? 'VIP' : '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white,
+                            style: const TextStyle(
+                              color: Colors.yellow,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

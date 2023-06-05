@@ -146,11 +146,16 @@ class ApiService {
 
   // Get dish by ingredient id
   static Future<List<DishModel>> getDishByIngredientId(List<int> ids) async {
-    final idList = ids.join(',');
-    final uri = Uri.http(_baseUrl, "/ingredient/search",
-        jsonEncode(idList) as Map<String, dynamic>?);
-    final header = {HttpHeaders.contentTypeHeader: 'application/json'};
-    final response = await http.get(uri, headers: header);
+    Map<String, dynamic> body = {
+      'ingredients': ids.map((id) => id.toString()).toList()
+    };
+    final response = await http.post(
+      Uri.parse('$_baseUrl/ingredient/search'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.body.runes.toList()));
       return List<DishModel>.from(data.map((json) => DishModel.fromJson(json)));

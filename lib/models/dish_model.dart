@@ -9,6 +9,7 @@ class DishModel {
   final double duration;
   final String status;
   final String imageUrl;
+  final bool isVip;
   final List<ViewDetailStepModel> steps;
   final List<NutritionDish> nutritionDishs;
   final List<IngredientDish> ingredientDishs;
@@ -21,6 +22,7 @@ class DishModel {
     required this.duration,
     required this.status,
     required this.imageUrl,
+    required this.isVip,
     required this.steps,
     required this.nutritionDishs,
     required this.ingredientDishs,
@@ -39,6 +41,7 @@ class DishModel {
       duration: double.parse(json['duration']),
       status: json['status'],
       imageUrl: json['imageUrl'],
+      isVip: json['isVip'],
       steps: List<ViewDetailStepModel>.from(
           json['steps'].map((x) => ViewDetailStepModel.fromJson(x))),
       nutritionDishs: List<NutritionDish>.from(

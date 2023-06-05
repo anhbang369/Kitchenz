@@ -1,4 +1,6 @@
+import 'package:firstapp/items/buy_premium_dialog.dart';
 import 'package:firstapp/models/dish_model.dart';
+import 'package:firstapp/pages/payment.dart';
 import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
 import '../items/view_detail_nutrition_item.dart';
@@ -29,6 +31,27 @@ class _ViewDetailState extends State<ViewDetail> {
         future: ApiService.fetchDishDetail(widget.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            // Check if dish is vip or not
+            if (snapshot.data?.isVip == true) {
+              // Show dialog to buy vip package
+              return AlertDialog(
+                title: const Text('Vip Package'),
+                content: const Text('Buy vip package to view this dish'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Payment())),
+                    child: const Text('Buy'),
+                  ),
+                ],
+              );
+            }
             return buildDishDetail(context, snapshot.data!);
           } else if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
