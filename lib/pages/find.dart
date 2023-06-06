@@ -60,9 +60,11 @@ class _FindPageState extends State<FindPage> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: SizedBox(
+          height: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             children: [
               const SizedBox(
                 height: 15,
@@ -79,7 +81,7 @@ class _FindPageState extends State<FindPage> {
                 },
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
               GestureDetector(
                 onTap: () {
@@ -163,8 +165,10 @@ class _FindPageState extends State<FindPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 300,
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
                 child: ListView.builder(
                   itemCount: foundedDishList.length,
                   itemBuilder: (context, index) {

@@ -1,7 +1,13 @@
+class DealModel {
+  final int id;
+  final String name;
 
-class DealModel{
-  final String id;
-  final String title;
+  const DealModel({required this.id, required this.name});
 
-  const DealModel({required this.id,required this.title});
+  factory DealModel.fromJson(Map<String, dynamic> json) {
+    return DealModel(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
 }

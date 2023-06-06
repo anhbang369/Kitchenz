@@ -1,9 +1,21 @@
+import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
 import '../models/deal_model.dart';
 import '../items/deal_item.dart';
 
-class DealPage extends StatelessWidget {
+class DealPage extends StatefulWidget {
   const DealPage({Key? key}) : super(key: key);
+
+  @override
+  State<DealPage> createState() => _DealPageState();
+}
+
+class _DealPageState extends State<DealPage> {
+  @override
+  void initState() {
+    ApiService.getRoutineList().then((value) => debugPrint(value.toString()));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +23,14 @@ class DealPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Chế độ ăn'),
+        title: const Text('Chế độ ăn'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
             color: Colors.deepOrange,
           ),
         ),
@@ -24,13 +38,14 @@ class DealPage extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Container(
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
                 color: Colors.deepOrange,
-                borderRadius: BorderRadius.circular(20), // Thêm border radius vào đây
+                borderRadius:
+                    BorderRadius.circular(20), // Thêm border radius vào đây
               ),
               child: const Align(
                 alignment: Alignment.center,
@@ -41,20 +56,28 @@ class DealPage extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              children: _post.map<Widget>((item) => DealItem(item.id,item.title)).toList(),
-            ),
+          FutureBuilder<List<DealModel>>(
+            future: ApiService.getRoutineList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final List<DealModel> deals = snapshot.data as List<DealModel>;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: deals.length,
+                    itemBuilder: (context, index) {
+                      return DealItem(deals[index].id, deals[index].name);
+                    },
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
         ],
       ),
     );
   }
 }
-
-final List<DealModel> _post = <DealModel>[
-  const DealModel(id: '1', title: 'Thực đơn tiêu chuẩn'),
-  const DealModel(id: '2', title: 'Chế độ tăng cân'),
-  const DealModel(id: '3', title: 'Chế độ giảm cân'),
-  const DealModel(id: '3', title: 'Chế độ rèn luyện sức khỏe'),
-];

@@ -1,4 +1,3 @@
-import 'package:firstapp/items/buy_premium_dialog.dart';
 import 'package:firstapp/models/dish_model.dart';
 import 'package:firstapp/pages/payment.dart';
 import 'package:firstapp/service/api_service.dart';

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import '../pages/view_detail.dart';
 
 class DealViewItem extends StatefulWidget {
-  final String id;
+  final int id;
   final String title;
   final String image;
-  final String time;
+  final double time;
   final String script;
-  final String meal;
+  final bool isVip;
 
   const DealViewItem(
-      this.id, this.title, this.image, this.time, this.script, this.meal);
+      this.id, this.title, this.image, this.time, this.script, this.isVip,
+      {super.key});
 
   @override
   _DealViewItemState createState() => _DealViewItemState();
@@ -31,10 +32,7 @@ class _DealViewItemState extends State<DealViewItem> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => ViewDetail(
-                    id: int.parse(widget.id),
-                  )),
+          MaterialPageRoute(builder: (context) => ViewDetail(id: widget.id)),
         );
       },
       child: Container(
@@ -60,27 +58,26 @@ class _DealViewItemState extends State<DealViewItem> {
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(
-                                widget.meal,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
+                      child: Stack(children: [
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              widget.isVip ? 'VIP' : '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.yellow,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ]),
                     ),
-                    Container(
+                    SizedBox(
                       height: 100,
                       width: 195,
                       child: Column(
@@ -98,7 +95,7 @@ class _DealViewItemState extends State<DealViewItem> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
-                            child: Text(widget.time),
+                            child: Text(widget.time.toString()),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),

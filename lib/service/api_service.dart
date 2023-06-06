@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:firstapp/models/category_post_view_model.dart';
 import 'package:firstapp/models/category_model.dart';
+import 'package:firstapp/models/deal_model.dart';
+import 'package:firstapp/models/deal_view_model.dart';
 import 'package:firstapp/models/ingredient_model.dart';
 import 'package:firstapp/models/nutrition_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -161,6 +163,30 @@ class ApiService {
       return List<DishModel>.from(data.map((json) => DishModel.fromJson(json)));
     } else {
       throw Exception('Failed to load dish');
+    }
+  }
+
+  // Get routine list
+  static Future<List<DealModel>> getRoutineList() async {
+    final response = await http.get(Uri.parse('$_baseUrl/routine/list'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.body.runes.toList()));
+      List<DealModel> list =
+          List<DealModel>.from(data.map((json) => DealModel.fromJson(json)));
+      return list;
+    } else {
+      throw Exception('Failed to load routine');
+    }
+  }
+
+  // Get deal detail
+  static Future<DealViewModel> getDealDetail(int id) async {
+    final response = await http.get(Uri.parse('$_baseUrl/routine/$id'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.body.runes.toList()));
+      return DealViewModel.fromJson(data);
+    } else {
+      throw Exception('Failed to load deal');
     }
   }
 }
