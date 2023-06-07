@@ -68,11 +68,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 100, bottom: 50),
-            child: Container(
+          const Padding(
+            padding: EdgeInsets.only(top: 100, bottom: 50),
+            child: SizedBox(
               height: 100,
-              child: const Column(
+              child: Column(
                 children: [
                   Center(
                     child: Text(
@@ -159,13 +159,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               )),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Container(
-              child: const Text(
-                'hoặc tiếp tục với',
-                style: TextStyle(fontSize: 17, color: Colors.grey),
-              ),
+          const Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: Text(
+              'hoặc tiếp tục với',
+              style: TextStyle(fontSize: 17, color: Colors.grey),
             ),
           ),
           GestureDetector(

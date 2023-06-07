@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
             CustomerListTitle(Icons.settings, 'Cài đặt', () => {}),
             CustomerListTitle(Icons.notifications, 'Thông báo', () => {}),
             CustomerListTitle(Icons.logout, 'Đăng xuất', () async {
-              await FirebaseService().signOut();
+              await ApiService.logout();
               FirebaseAuth.instance.signOut().then((value) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const MyApp()));

@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:firstapp/models/dish_model.dart';
 
-class DealViewModel {
+class DealViewModel extends Equatable {
   final int id;
   final String name;
   final List<DealViewDayModel> days;
@@ -19,6 +20,9 @@ class DealViewModel {
           json['days'].map((x) => DealViewDayModel.fromJson(x))),
     );
   }
+
+  @override
+  List<Object> get props => [id, name, days];
 }
 
 class DealViewDayModel {

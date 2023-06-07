@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/models/dish_model.dart';
+import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/pages/payment.dart';
 import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,14 @@ class ViewDetail extends StatefulWidget {
 }
 
 class _ViewDetailState extends State<ViewDetail> {
+  UserModel? currentUser;
   @override
   void initState() {
+    ApiService.getCurrentUser().then((user) {
+      setState(() {
+        currentUser = user;
+      });
+    });
     super.initState();
   }
 
@@ -29,9 +37,15 @@ class _ViewDetailState extends State<ViewDetail> {
       body: FutureBuilder<DishModel>(
         future: ApiService.fetchDishDetail(widget.id),
         builder: (context, snapshot) {
+          // Check if user is null
+          if (currentUser == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           if (snapshot.hasData) {
             // Check if dish is vip or not
-            if (snapshot.data?.isVip == true) {
+            if (snapshot.data?.isVip == true && currentUser!.isVip == false) {
               // Show dialog to buy vip package
               return AlertDialog(
                 title: const Text('Vip Package'),

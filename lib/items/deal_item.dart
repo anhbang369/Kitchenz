@@ -13,7 +13,8 @@ class DealItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DealView(id: id)),
+          MaterialPageRoute(
+              builder: (context) => DealView(id: id, title: title)),
         );
       },
       child: Padding(

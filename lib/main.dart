@@ -1,3 +1,4 @@
+import 'package:firstapp/service/api_service.dart';
 import 'package:firstapp/service/firebase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -22,17 +23,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // Check if the user is logged in
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // Check if the user is logged in
 
-      home: FirebaseAuth.instance.currentUser == null
-          ? LoginIn()
-          : const Menu(title: ''),
-    );
+        home: FutureBuilder(
+          future: ApiService.getCurrentUser(),
+          builder: (context, snapshot) {
+            if (snapshot.data != null) {
+              return const Menu(title: '');
+            } else {
+              return LoginIn();
+            }
+          },
+        ));
   }
 }
 
@@ -160,27 +167,29 @@ class _LoginInState extends State<LoginIn> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: signUpButton(context, false, () {
-              FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                      email: _emailEditingController.text,
-                      password: _passwordEditingController.text)
-                  .then((value) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Menu(title: '')));
-              }).catchError((e) {
-                Fluttertoast.showToast(
-                    msg: "Vui lòng kiểm tra lại email và mật khẩu.",
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.grey,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              });
-            }),
+            child: signUpButton(context, false
+                // , () {
+                //   FirebaseAuth.instance
+                //       .signInWithEmailAndPassword(
+                //           email: _emailEditingController.text,
+                //           password: _passwordEditingController.text)
+                //       .then((value) {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => const Menu(title: '')));
+                //   }).catchError((e) {
+                //     Fluttertoast.showToast(
+                //         msg: "Vui lòng kiểm tra lại email và mật khẩu.",
+                //         toastLength: Toast.LENGTH_LONG,
+                //         gravity: ToastGravity.BOTTOM,
+                //         timeInSecForIosWeb: 1,
+                //         backgroundColor: Colors.grey,
+                //         textColor: Colors.white,
+                //         fontSize: 16.0);
+                //   });
+                // }
+                ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10),
@@ -243,10 +252,19 @@ class _LoginInState extends State<LoginIn> {
               onPressed: () async {
                 await FirebaseService().signInWithGoogle();
                 if (FirebaseAuth.instance.currentUser != null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Menu(title: '')));
+                  ApiService.login(FirebaseAuth.instance.currentUser!.email!,
+                          FirebaseAuth.instance.currentUser!.uid)
+                      .then((user) {
+                    FirebaseService().signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Menu(title: '')));
+                  });
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const Menu(title: '')));
                 } else {
                   // Yêu cầu người dùng đăng nhập trước khi chuyển đến trang chủ
                   // ...
@@ -308,19 +326,29 @@ class _LoginInState extends State<LoginIn> {
     );
   }
 
-  Widget signUpButton(BuildContext context, bool isLogin, Function ontap) {
+  Widget signUpButton(BuildContext context, bool isLogin) {
     return SizedBox(
       height: 60,
       child: ElevatedButton(
         onPressed: () {
-          ontap();
+          ApiService.login(
+            _emailEditingController.text,
+            _passwordEditingController.text,
+          ).then((user) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const Menu(title: '')));
+          }).catchError((e) {
+            Fluttertoast.showToast(
+              msg: "Vui lòng kiểm tra lại email và mật khẩu.",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+          });
         },
-        child: const Center(
-          child: Text(
-            'Đăng nhập',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        ),
         style: ButtonStyle(
           backgroundColor: MaterialStateColor.resolveWith((states) {
             return Colors.deepOrange;
@@ -329,6 +357,12 @@ class _LoginInState extends State<LoginIn> {
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+          ),
+        ),
+        child: const Center(
+          child: Text(
+            'Đăng nhập',
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
       ),

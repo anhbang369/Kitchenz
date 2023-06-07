@@ -4,16 +4,17 @@ import '../models/deal_view_model.dart';
 import '../items/deal_view_item.dart';
 
 class DealView extends StatefulWidget {
-  const DealView({Key? key, required this.id}) : super(key: key);
+  const DealView({Key? key, required this.id, required this.title})
+      : super(key: key);
   final int id;
+  final String title;
   @override
   _DealViewState createState() => _DealViewState();
 }
 
 class _DealViewState extends State<DealView> {
-  final items = ['item1', 'item 2', 'item 3'];
-  String? value;
-
+  DealViewDayModel? dealViewDayModel;
+  int? dayOrder;
   @override
   void initState() {
     super.initState();
@@ -25,7 +26,7 @@ class _DealViewState extends State<DealView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Thực đơn tiêu chuẩn'),
+        title: Text(widget.title),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -38,69 +39,90 @@ class _DealViewState extends State<DealView> {
       ),
       body: Container(
         color: Colors.white,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Container(
-                  width: 150,
-                  height: 32,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: value,
-                      items: items.map(buildMenuItem).toList(),
-                      onChanged: (value) => setState(() => this.value = value),
+        child: FutureBuilder(
+          future: ApiService.getDealDetail(widget.id),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              dayOrder ??= snapshot.data!.days[0].dayOrder;
+              return Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10),
+                      child: Container(
+                        width: 150,
+                        height: 32,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            isExpanded: true,
+                            value: dayOrder ?? snapshot.data!.days[0].dayOrder,
+                            items: snapshot.data!.days.map((day) {
+                              return DropdownMenuItem<int>(
+                                value: day.dayOrder,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Ngày ${day.dayOrder}',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              debugPrint(value.toString());
+                              setState(() {
+                                dayOrder = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: FutureBuilder<DealViewModel>(
-                future: ApiService.getDealDetail(widget.id),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return SingleChildScrollView(
+                  Expanded(
+                    child: SingleChildScrollView(
                       child: Column(
                         children: snapshot.data!.days.expand((day) {
                           return day.dayDetails.map((dayDetail) {
-                            return DealViewItem(
-                              dayDetail.dish.id,
-                              dayDetail.dish.name,
-                              dayDetail.dish.imageUrl,
-                              dayDetail.dish.duration,
-                              dayDetail.dish.description,
-                              dayDetail.dish.isVip,
-                            );
+                            if (day.dayOrder == dayOrder) {
+                              return DealViewItem(
+                                dayDetail.dish.id,
+                                dayDetail.dish.name,
+                                dayDetail.dish.imageUrl,
+                                dayDetail.dish.duration,
+                                dayDetail.dish.description,
+                                dayDetail.dish.isVip,
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
                           });
                         }).toList(),
                       ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );
   }
 
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
+  DropdownMenuItem<DealViewDayModel> buildMenuItem(
+          DealViewDayModel dealViewDayModel) =>
+      DropdownMenuItem(
+        value: dealViewDayModel,
         alignment: Alignment.center,
         child: Text(
-          item,
+          'Ngày ${dealViewDayModel.dayOrder}',
           style: const TextStyle(fontSize: 18),
         ),
       );

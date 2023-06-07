@@ -7,6 +7,7 @@ import 'package:firstapp/models/deal_model.dart';
 import 'package:firstapp/models/deal_view_model.dart';
 import 'package:firstapp/models/ingredient_model.dart';
 import 'package:firstapp/models/nutrition_model.dart';
+import 'package:firstapp/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dish_model.dart';
@@ -187,6 +188,79 @@ class ApiService {
       return DealViewModel.fromJson(data);
     } else {
       throw Exception('Failed to load deal');
+    }
+  }
+
+  // Login
+  static Future<UserModel> login(String email, String uid) async {
+    // body
+    Map<String, dynamic> body = {
+      'email': email,
+      'uid': uid,
+    };
+    final response = await http.post(
+      Uri.parse('$_baseUrl/user/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.body.runes.toList()));
+      UserModel user = UserModel.fromJson(data);
+      return storeUser(user);
+    } else {
+      throw Exception('Failed to login');
+    }
+  }
+
+  static Future<UserModel> storeUser(UserModel user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userEmail', user.email);
+    await prefs.setString('userUid', user.uid);
+    await prefs.setBool('isUserVip', user.isVip);
+    return user;
+  }
+
+  static Future<UserModel?> getCurrentUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('userEmail');
+    String? userUid = prefs.getString('userUid');
+    bool? isUserVip = prefs.getBool('isUserVip');
+
+    if (userEmail != null && userUid != null && isUserVip != null) {
+      return UserModel(
+        email: userEmail,
+        uid: userUid,
+        isVip: isUserVip,
+      );
+    } else {
+      return null;
+    }
+  }
+
+  static Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userEmail');
+    await prefs.remove('userUid');
+    await prefs.remove('isUserVip');
+  }
+
+  // Update vip status
+  static Future<UserModel> updateVip() async {
+    UserModel? user = await getCurrentUser();
+    if (user != null) {
+      final String uid = user.uid;
+      final response =
+          await http.get(Uri.parse('$_baseUrl/user/success-payment/$uid'));
+      if (response.statusCode == 200) {
+        user.isVip = true;
+        return storeUser(user);
+      } else {
+        throw Exception('Failed to update vip');
+      }
+    } else {
+      throw Exception('Failed to update vip');
     }
   }
 }

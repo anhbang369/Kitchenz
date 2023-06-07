@@ -13,7 +13,6 @@ class DealPage extends StatefulWidget {
 class _DealPageState extends State<DealPage> {
   @override
   void initState() {
-    ApiService.getRoutineList().then((value) => debugPrint(value.toString()));
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/models/dish_model.dart';
 import 'package:firstapp/models/ingredient_model.dart';
+import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/pages/view_detail.dart';
 import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,20 @@ class _FindPageState extends State<FindPage> {
   List<IngredientModel?> selectedIngredientList = [];
   List<IngredientModel> ingredientList = [];
   List<DishModel> foundedDishList = [];
+  UserModel? currentUser;
 
   Future<void> loadData() async {
     await ApiService.fetchIngredientList().then((value) {
       setState(() {
         ingredientList = value;
+      });
+    });
+  }
+
+  Future getCurrentUser() async {
+    await ApiService.getCurrentUser().then((value) {
+      setState(() {
+        currentUser = value;
       });
     });
   }
@@ -39,6 +49,7 @@ class _FindPageState extends State<FindPage> {
     selectedIngredientList.add(null);
     super.initState();
     loadData();
+    getCurrentUser();
   }
 
   @override
@@ -85,7 +96,8 @@ class _FindPageState extends State<FindPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (inputCount < 4) {
+                  int maxInput = currentUser!.isVip ? 4 : 2;
+                  if (inputCount < maxInput) {
                     // kiểm tra giá trị biến đếm
                     setState(() {
                       selectedIngredientList.add(null);
@@ -93,7 +105,8 @@ class _FindPageState extends State<FindPage> {
                     });
                   } else {
                     Fluttertoast.showToast(
-                        msg: "Số lượng đã đạt tối đa",
+                        msg:
+                            'Số lượng đã đạt tối đa${currentUser!.isVip ? '' : ', nâng cấp Premium để tăng số lượng tối đa lên 4'}',
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,
