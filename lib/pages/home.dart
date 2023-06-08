@@ -297,38 +297,6 @@ const ADVICE_DATA = [
           'https://naganic.vn/wp-content/uploads/2021/10/rau-cu-giau-dinh-duong.jpg'),
 ];
 
-const TREND_DATA = [
-  HomeTrendModel(
-      id: '1',
-      title: 'Cơm chiên dương châu',
-      image: 'https://i.ytimg.com/vi/FR4DH5sSysI/maxresdefault.jpg',
-      time: '20 phút'),
-  HomeTrendModel(
-      id: '2',
-      title: 'Cơm sườn cóc lết',
-      image:
-          'https://image.xahoi.com.vn/resize_480x600/news/2014/06/14/mon-com-suon.jpg',
-      time: '30 phút'),
-  HomeTrendModel(
-      id: '3',
-      title: 'Phở tái nạm Huế',
-      image:
-          'https://cdn.tgdd.vn/Files/2022/01/25/1412805/cach-nau-pho-bo-nam-dinh-chuan-vi-thom-ngon-nhu-hang-quan-202201250313281452.jpg',
-      time: '50 phút'),
-  HomeTrendModel(
-      id: '4',
-      title: 'Gà nướng lu',
-      image:
-          'https://chumrestaurant.com/wp-content/uploads/2021/11/Ga-nuong-lu-500x500-1.jpg',
-      time: '45 phút'),
-  HomeTrendModel(
-      id: '5',
-      title: 'Nui xào hải sản',
-      image:
-          'https://yt.cdnxbvn.com/medias/uploads/61/61633-nui-xao-hai-san.jpg',
-      time: '35 phút'),
-];
-
 class CustomerListTitle extends StatelessWidget {
   IconData icon;
   String text;
