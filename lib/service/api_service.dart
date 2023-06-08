@@ -22,28 +22,29 @@ class ApiService {
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.body.runes.toList()));
       DishModel dish = DishModel.fromJson(data);
-      return getNutritionListLocally().then((nutritionsData) {
-        // for each nutritionDish, get nutrition data by id then set name and unit
-        for (var nd in dish.nutritionDishs) {
-          for (var n in nutritionsData) {
-            if (nd.id == n.id) {
-              nd.name = n.name;
-              nd.unit = n.unit;
-            }
-          }
-        }
-        return getIngredientListLocally().then((ingredientsData) {
-          for (var id in dish.ingredientDishs) {
-            for (var i in ingredientsData) {
-              if (id.id == i.id) {
-                id.name = i.name;
-                id.unit = i.unit;
-              }
-            }
-          }
-          return dish;
-        });
-      });
+      return dish;
+      // return getNutritionListLocally().then((nutritionsData) {
+      //   // for each nutritionDish, get nutrition data by id then set name and unit
+      //   for (var nd in dish.nutritionDishs) {
+      //     for (var n in nutritionsData) {
+      //       if (nd.id == n.id) {
+      //         nd.name = n.name;
+      //         nd.unit = n.unit;
+      //       }
+      //     }
+      //   }
+      //   return getIngredientListLocally().then((ingredientsData) {
+      //     for (var id in dish.ingredientDishs) {
+      //       for (var i in ingredientsData) {
+      //         if (id.id == i.id) {
+      //           id.name = i.name;
+      //           id.unit = i.unit;
+      //         }
+      //       }
+      //     }
+      //     return dish;
+      //   });
+      // });
     } else {
       throw Exception('Failed to load dish');
     }
@@ -216,6 +217,7 @@ class ApiService {
 
   static Future<UserModel> storeUser(UserModel user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('id', user.id);
     await prefs.setString('userEmail', user.email);
     await prefs.setString('userUid', user.uid);
     await prefs.setBool('isUserVip', user.isVip);
@@ -224,12 +226,17 @@ class ApiService {
 
   static Future<UserModel?> getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('id');
     String? userEmail = prefs.getString('userEmail');
     String? userUid = prefs.getString('userUid');
     bool? isUserVip = prefs.getBool('isUserVip');
 
-    if (userEmail != null && userUid != null && isUserVip != null) {
+    if (id != null &&
+        userEmail != null &&
+        userUid != null &&
+        isUserVip != null) {
       return UserModel(
+        id: id,
         email: userEmail,
         uid: userUid,
         isVip: isUserVip,

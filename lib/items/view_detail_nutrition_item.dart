@@ -4,7 +4,9 @@ class ViewDetailNutritionItem extends StatelessWidget {
   final int id;
   final String title;
   final double amount;
-  const ViewDetailNutritionItem(this.id, this.title, this.amount, {super.key});
+  final String unit;
+  const ViewDetailNutritionItem(this.id, this.title, this.amount, this.unit,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class ViewDetailNutritionItem extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Padding(
               padding: const EdgeInsets.only(right: 20),
-              child: Text(amount.toString()),
+              child: Text('$amount'),
             ),
           ),
         ],

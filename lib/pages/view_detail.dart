@@ -131,12 +131,8 @@ Widget buildDishDetail(BuildContext context, DishModel dish) {
                   mainAxisSpacing: 20,
                 ),
                 children: dish.nutritionDishs.map((item) {
-                  // Check if item.name is not empty, if empty return zero size container
-                  if (item.name.isNotEmpty) {
-                    return ViewDetailNutritionItem(
-                        item.id, item.name, item.amount);
-                  }
-                  return Container();
+                  return ViewDetailNutritionItem(item.id, item.nutrition.name,
+                      item.amount, item.nutrition.unit);
                 }).toList(),
               ),
             ),
@@ -149,12 +145,8 @@ Widget buildDishDetail(BuildContext context, DishModel dish) {
             ),
             Column(
               children: dish.ingredientDishs.map((item) {
-                // Check if item.name is not empty, if empty return zero size container
-                if (item.name.isNotEmpty) {
-                  return ViewDetailIngredientItem(
-                      item.id, item.name, item.amount, item.unit);
-                }
-                return Container();
+                return ViewDetailIngredientItem(item.id, item.ingredient.name,
+                    item.amount, item.ingredient.unit);
               }).toList(),
             ),
             const Padding(
