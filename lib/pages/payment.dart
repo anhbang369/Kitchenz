@@ -150,29 +150,49 @@ class _PaymentState extends State<Payment> {
       await Stripe.instance.presentPaymentSheet().then((value) {
         ApiService.updateVip().then((user) {
           if (user.isVip == true) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                        ),
+                        Text("Thanh toán thành công"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const Menu(title: '')));
           }
-        });
-        showDialog(
-          context: context,
-          builder: (_) => const AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                    ),
-                    Text("Thanh toán thành công"),
-                  ],
-                ),
-              ],
+        }).catchError((error) {
+          showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                      Text("Cập nhật user thất bại"),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
 
         // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("paid successfully")));
 

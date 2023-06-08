@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                       children: snapshot.data!
                           .map(
                             (item) => HomeTrendItem(item.id, item.name,
-                                item.imageUrl, item.duration),
+                                item.imageUrl, item.duration, item.isVip),
                           )
                           .toList(),
                     );
