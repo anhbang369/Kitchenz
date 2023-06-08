@@ -68,8 +68,9 @@ class ApiService {
         await http.get(Uri.parse('$_baseUrl/category/dish-of-category/$id'));
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.body.runes.toList()));
-      return List<CategoryPostViewModel>.from(
+      final list = List<CategoryPostViewModel>.from(
           data.map((json) => CategoryPostViewModel.fromJson(json)));
+      return list;
     } else {
       throw Exception('Failed to load dish');
     }
@@ -268,6 +269,26 @@ class ApiService {
       }
     } else {
       throw Exception('Failed to update vip');
+    }
+  }
+
+  static Future<bool> likeDish(int userId, int dishId) async {
+    Map<String, dynamic> body = {
+      'userId': userId,
+      'dishId': dishId,
+    };
+    final response = await http.post(
+      Uri.parse('$_baseUrl/dish/like'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to like dish');
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/models/category_model.dart';
+import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/pages/view_detail.dart';
 import 'package:firstapp/service/api_service.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,20 @@ class CategoryView extends StatefulWidget {
 
 class _CategoryViewState extends State<CategoryView> {
   final List<CategoryPostViewModel> _post = [];
-  List<CategoryPostViewModel> _postDisplay = [];
+  List<CategoryPostViewModel> _postDisplay = List.empty(growable: true);
+  UserModel? currentUser;
 
   @override
   void initState() {
-    ApiService.fetchDishOfCategory(widget.category.id).then((value) {
+    ApiService.getCurrentUser().then((user) {
       setState(() {
-        _post.addAll(value);
-        _postDisplay = _post;
+        currentUser = user;
+      });
+      ApiService.fetchDishOfCategory(widget.category.id).then((value) {
+        setState(() {
+          _post.addAll(value);
+          _postDisplay = _post;
+        });
       });
     });
     super.initState();
@@ -38,9 +45,13 @@ class _CategoryViewState extends State<CategoryView> {
 
   bool _isFavorited = false;
 
-  void _toggleFavorite() {
+  void _toggleFavorite(int index) {
     setState(() {
-      _isFavorited = !_isFavorited;
+      if (_postDisplay[index].likes!.contains(currentUser!.id.toString())) {
+        _postDisplay[index].likes!.remove(currentUser!.id.toString());
+      } else {
+        _postDisplay[index].likes!.add(currentUser!.id.toString());
+      }
     });
   }
 
@@ -159,9 +170,10 @@ class _CategoryViewState extends State<CategoryView> {
                               fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text('24 phút'),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                            '${_postDisplay[index].duration!.ceil()} phút'),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
@@ -174,34 +186,48 @@ class _CategoryViewState extends State<CategoryView> {
                     ],
                   ),
                 ),
-                FirebaseAuth.instance.currentUser?.uid ==
-                        'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
-                    ? Container(
-                        margin: const EdgeInsets.only(bottom: 80),
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: _toggleFavorite,
-                          splashRadius: 1,
-                        ),
-                      )
-                    : Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: IconButton(
-                          icon: Icon(
-                            _isFavorited
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: _isFavorited ? Colors.red : Colors.black,
-                          ),
-                          onPressed: _toggleFavorite,
-                          splashRadius: 1,
-                        ),
-                      ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: IconButton(
+                    icon: Icon(
+                      checkUserHasLike(index)
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color:
+                          checkUserHasLike(index) ? Colors.red : Colors.black,
+                    ),
+                    onPressed: () {
+                      ApiService.likeDish(
+                              currentUser!.id, _postDisplay[index].id!)
+                          .then((value) {
+                        if (value == true) {
+                          // Reload list of posts
+                          ApiService.fetchDishOfCategory(widget.category.id)
+                              .then((value) {
+                            setState(() {
+                              _post.clear();
+                              _post.addAll(value);
+                              _postDisplay = _post;
+                            });
+                          });
+                        }
+                      });
+                    },
+                    splashRadius: 1,
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool checkUserHasLike(int index) {
+    if (currentUser != null && _postDisplay[index].likes != null) {
+      return _postDisplay[index].likes!.contains(currentUser!.id.toString());
+    }
+    return false;
   }
 }

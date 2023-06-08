@@ -88,13 +88,13 @@ class _DealViewState extends State<DealView> {
                           return day.dayDetails.map((dayDetail) {
                             if (day.dayOrder == dayOrder) {
                               return DealViewItem(
-                                dayDetail.dish.id,
-                                dayDetail.dish.name,
-                                dayDetail.dish.imageUrl,
-                                dayDetail.dish.duration,
-                                dayDetail.dish.description,
-                                dayDetail.dish.isVip,
-                              );
+                                  dayDetail.dish.id,
+                                  dayDetail.dish.name,
+                                  dayDetail.dish.imageUrl,
+                                  dayDetail.dish.duration,
+                                  dayDetail.dish.description,
+                                  dayDetail.dish.isVip,
+                                  dayDetail.dish.likes);
                             } else {
                               return const SizedBox.shrink();
                             }

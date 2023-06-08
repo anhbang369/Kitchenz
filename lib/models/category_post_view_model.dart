@@ -7,6 +7,7 @@ class CategoryPostViewModel {
   String? status;
   String? imageUrl;
   bool? isVip;
+  List<String>? likes = [];
 
   CategoryPostViewModel({
     this.id,
@@ -17,9 +18,16 @@ class CategoryPostViewModel {
     this.status,
     this.imageUrl,
     this.isVip,
-  });
+    List<String>? likes,
+  }) : likes = likes ?? [];
 
   CategoryPostViewModel.fromJson(Map<String, dynamic> json) {
+    List<Map<String, dynamic>> likesData =
+        List<Map<String, dynamic>>.from(json['likes']);
+    List<String> likeList = likesData
+        .where((like) => like['status'] == 'ACTIVE')
+        .map((like) => like['user']['id'].toString())
+        .toList(growable: false);
     id = json['id'];
     name = json['name'];
     description = json['description'];
@@ -28,6 +36,7 @@ class CategoryPostViewModel {
     status = json['status'];
     imageUrl = json['imageUrl'];
     isVip = json['isVip'];
+    likes = likeList;
   }
 
   Map<String, dynamic> toJson() {

@@ -149,7 +149,6 @@ class _FindPageState extends State<FindPage> {
                   }
                   // Call api
                   ApiService.getDishByIngredientId(idList).then((value) {
-                    debugPrint(value.toString());
                     setState(() {
                       foundedDishList = value;
                     });
@@ -276,27 +275,37 @@ class _FindPageState extends State<FindPage> {
                     ],
                   ),
                 ),
-                FirebaseAuth.instance.currentUser?.uid ==
-                        'BKJq8xaAnHhIhe8AnUEmLPpraqo1'
-                    ? Container(
-                        margin: const EdgeInsets.only(bottom: 80),
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () {},
-                          splashRadius: 1,
-                        ),
-                      )
-                    : Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: IconButton(
-                          icon: Icon(
-                            true ? Icons.favorite : Icons.favorite_border,
-                            color: true ? Colors.red : Colors.black,
-                          ),
-                          onPressed: () {},
-                          splashRadius: 1,
-                        ),
-                      ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: IconButton(
+                    icon: Icon(
+                      dish.likes.contains(currentUser!.id.toString())
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: dish.likes.contains(currentUser!.id.toString())
+                          ? Colors.red
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      ApiService.likeDish(currentUser!.id, dish.id)
+                          .then((value) {
+                        if (value) {
+                          // reload list
+                          ApiService.getDishByIngredientId(
+                                  selectedIngredientList
+                                      .map((e) => e!.id)
+                                      .toList())
+                              .then((value) {
+                            setState(() {
+                              foundedDishList = value;
+                            });
+                          });
+                        }
+                      });
+                    },
+                    splashRadius: 1,
+                  ),
+                ),
               ],
             ),
           ),
