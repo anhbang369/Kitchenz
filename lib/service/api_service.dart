@@ -291,4 +291,15 @@ class ApiService {
       throw Exception('Failed to like dish');
     }
   }
+
+  static Future<List<DishModel>> getLikedDish(int userId) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/dish/get-liked-dish/$userId'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.body.runes.toList()));
+      return List<DishModel>.from(data.map((json) => DishModel.fromJson(json)));
+    } else {
+      throw Exception('Failed to load dish');
+    }
+  }
 }
