@@ -15,6 +15,7 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   String description = '';
+  final filedTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,8 @@ class _CommentState extends State<Comment> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: TextFormField(
+                  child: TextField(
+                    controller: filedTextController,
                     onChanged: (value) => setState(() {
                       description = value;
                     }),
@@ -91,7 +93,7 @@ class _CommentState extends State<Comment> {
                       ),
                     );
                     setState(() {
-                      description = '';
+                      filedTextController.clear();
                     });
                   });
                 }
