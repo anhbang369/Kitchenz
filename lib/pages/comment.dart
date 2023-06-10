@@ -75,39 +75,38 @@ class _CommentState extends State<Comment> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    color: Colors.deepOrange,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 30),
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (description == '') {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Bạn chưa nhập đánh giá'),
-                            ),
-                          );
-                        } else {
-                          ApiService.comment(widget.dishId, description)
-                              .then((cmt) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Đánh giá thành công'),
-                              ),
-                            );
-                            setState(() {
-                              description = '';
-                            });
-                          });
-                        }
-                      },
+            child: GestureDetector(
+              onTap: () async {
+                if (description == '') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Bạn chưa nhập đánh giá'),
+                    ),
+                  );
+                } else {
+                  ApiService.comment(widget.dishId, description).then((cmt) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Đánh giá thành công'),
+                      ),
+                    );
+                    setState(() {
+                      description = '';
+                    });
+                  });
+                }
+              },
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
                       child: const Text(
                         'Gửi',
                         style: TextStyle(fontSize: 20, color: Colors.white),

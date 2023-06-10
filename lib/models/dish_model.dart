@@ -1,6 +1,4 @@
 import 'package:firstapp/models/comment_model.dart';
-import 'package:firstapp/models/nutrition_model.dart';
-import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/models/view_detail_step_model.dart';
 
 class DishModel {
