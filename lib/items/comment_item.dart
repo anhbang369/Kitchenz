@@ -45,7 +45,9 @@ class CommentItem extends StatelessWidget {
                       child: Text(
                         name == '' ? 'User' : name,
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Padding(
