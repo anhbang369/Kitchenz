@@ -1,4 +1,6 @@
+import 'package:firstapp/models/comment_model.dart';
 import 'package:firstapp/models/nutrition_model.dart';
+import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/models/view_detail_step_model.dart';
 
 class DishModel {
@@ -10,6 +12,7 @@ class DishModel {
   final String status;
   final String imageUrl;
   final bool isVip;
+  final List<CommentModel> comments;
   final List<String> likes;
   final List<ViewDetailStepModel> steps;
   final List<NutritionDish> nutritionDishs;
@@ -25,6 +28,7 @@ class DishModel {
     required this.imageUrl,
     required this.isVip,
     required this.likes,
+    required this.comments,
     required this.steps,
     required this.nutritionDishs,
     required this.ingredientDishs,
@@ -35,12 +39,18 @@ class DishModel {
     // json['steps'] = json['steps']
     //     .where((step) => step['status'] == 'ACTIVE')
     //     .toList(growable: false);
+
     List<Map<String, dynamic>> likesData =
         List<Map<String, dynamic>>.from(json['likes']);
     List<String> likes = likesData
         .where((like) => like['status'] == 'ACTIVE')
         .map((like) => like['user']['id'].toString())
         .toList(growable: false);
+    List<CommentModel> commentsList = json['comments'] != null
+        ? (json['comments'] as List)
+            .map((comment) => CommentModel.fromJson(comment))
+            .toList()
+        : [];
     return DishModel(
       id: json['id'],
       name: json['name'],
@@ -51,6 +61,7 @@ class DishModel {
       imageUrl: json['imageUrl'],
       isVip: json['isVip'],
       likes: likes,
+      comments: commentsList,
       steps: List<ViewDetailStepModel>.from(
           json['steps'].map((x) => ViewDetailStepModel.fromJson(x))),
       nutritionDishs: List<NutritionDish>.from(

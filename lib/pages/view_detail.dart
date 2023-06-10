@@ -173,7 +173,11 @@ Widget buildDishDetail(BuildContext context, DishModel dish) {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Comment()),
+                    MaterialPageRoute(
+                        builder: (context) => Comment(
+                              dishId: dish.id,
+                              comments: dish.comments,
+                            )),
                   );
                 },
                 child: Container(
