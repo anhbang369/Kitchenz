@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CommentItem extends StatelessWidget {
-  final String id;
+  final int id;
   final String name;
   final String date;
   final String image;
@@ -11,6 +11,7 @@ class CommentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -26,27 +27,35 @@ class CommentItem extends StatelessWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(image),
+                        image: NetworkImage(image == ''
+                            ? 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000'
+                            : image),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
-
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 10),
+                      child: Text(
+                        name == '' ? 'User' : name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      child: Text(date, style: TextStyle(fontSize: 16),),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 10),
+                      child: Text(
+                        date,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
-
-
                   ],
                 ),
               ],
@@ -55,12 +64,13 @@ class CommentItem extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Container(
-            child: Text('Whether you are working on a new cutting edge app or simply ramping up on new technology, Java documentation has all the information you need to make your project a smashing success. Use the rich set of code samples, tutorials, developer guides, API documentation, and more to quickly develop your prototype',style: TextStyle(fontSize: 18,color: Colors.grey),),
+          child: Text(
+            comment,
+            textDirection: TextDirection.ltr,
+            style: const TextStyle(fontSize: 18, color: Colors.grey),
           ),
         ),
       ],
     );
-
   }
 }
