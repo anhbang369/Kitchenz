@@ -202,6 +202,8 @@ class ApiService {
     await prefs.setString('imageUrl', user.imageUrl);
     await prefs.setBool('isUserVip', user.isVip);
     await prefs.setString('username', user.username);
+    await prefs.setString('phone', user.phone);
+    await prefs.setString('address', user.address);
     return user;
   }
 
@@ -213,13 +215,17 @@ class ApiService {
     String? imageUrl = prefs.getString('imageUrl');
     bool? isUserVip = prefs.getBool('isUserVip');
     String? username = prefs.getString('username');
+    String? phone = prefs.getString('phone');
+    String? address = prefs.getString('address');
 
     if (id != null &&
         userEmail != null &&
         userUid != null &&
         isUserVip != null &&
         imageUrl != null &&
-        username != null) {
+        username != null &&
+        phone != null &&
+        address != null) {
       return UserModel(
         id: id,
         email: userEmail,
@@ -227,6 +233,8 @@ class ApiService {
         imageUrl: imageUrl,
         isVip: isUserVip,
         username: username,
+        phone: phone,
+        address: address,
       );
     } else {
       return null;
@@ -313,6 +321,31 @@ class ApiService {
       }
     } else {
       throw Exception('Failed to comment');
+    }
+  }
+
+  static Future<UserModel> updateUser(
+      String username, String email, String address, String phone) async {
+    UserModel? user = await getCurrentUser();
+    if (user != null) {
+      if (username != '') user = user.copyWith(username: username);
+      if (email != '') user = user.copyWith(email: email);
+      if (address != '') user = user.copyWith(address: address);
+      if (phone != '') user = user.copyWith(phone: phone);
+      final response = await http.post(
+        Uri.parse('$_baseUrl/user/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(user.toJson()),
+      );
+      if (response.statusCode == 200) {
+        return storeUser(user);
+      } else {
+        throw Exception('Failed to update user');
+      }
+    } else {
+      throw Exception('Failed to update user');
     }
   }
 }
