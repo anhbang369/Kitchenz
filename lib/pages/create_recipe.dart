@@ -49,32 +49,32 @@ class _CreateRecipeState extends State<CreateRecipe> {
             state:
                 _activeStepIndex <= 0 ? StepState.indexed : StepState.complete,
             isActive: _activeStepIndex >= 0,
-            title: Text(''),
+            title: const Text(''),
             content: Column(
               children: [
-                Text(
+                const Text(
                   'Tạo mới công thức',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Sáng tạo thêm nhiều công thức để mang lại nhiều trải nghiệm cho người dùng tại đây. Đây là nơi thỏa xuất cho bạn sáng tạo những công thức độc đáo, mới lạ.',
                   style: TextStyle(fontSize: 17, color: Colors.grey),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: title,
                   decoration: InputDecoration(
                     hintText: 'Nhập tên công thức',
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  style: TextStyle(fontSize: 17, height: 2),
+                  style: const TextStyle(fontSize: 17, height: 2),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Center(
                   child: TextFormField(
                     controller: script,
@@ -83,21 +83,21 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       hintText: 'Viết một cái gì đó...',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 50, horizontal: 10),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Center(
+                const Center(
                   child: Text(
                     'Tải ảnh lên',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -108,46 +108,46 @@ class _CreateRecipeState extends State<CreateRecipe> {
         Step(
           state: _activeStepIndex <= 1 ? StepState.indexed : StepState.complete,
           isActive: _activeStepIndex >= 1,
-          title: Text(''),
+          title: const Text(''),
           content: Column(
             children: [
-              Text(
+              const Text(
                 'Giá trị dinh dưỡng',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Có bao nhiêu ca lo trong món ăn của bạn? Có bao nhiêu gam chất béo có trong bánh?',
                 style: TextStyle(fontSize: 17, color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: nutrition,
                 decoration: InputDecoration(
                   hintText: 'Nhập chất dinh dưỡng',
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                style: TextStyle(fontSize: 17, height: 2),
+                style: const TextStyle(fontSize: 17, height: 2),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: nutritionAmount,
                 decoration: InputDecoration(
                   hintText: 'Số lượng ex: 100 cal',
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                style: TextStyle(fontSize: 17, height: 2),
+                style: const TextStyle(fontSize: 17, height: 2),
               ),
-              SizedBox(height: 20),
-              Container(
+              const SizedBox(height: 20),
+              SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
@@ -166,12 +166,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     //load
                     setState(() {});
                   },
-                  child: Center(
-                    child: Text(
-                      'Thêm chất dinh dưỡng',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith((states) {
                       return Colors.deepOrange;
@@ -182,9 +176,15 @@ class _CreateRecipeState extends State<CreateRecipe> {
                       ),
                     ),
                   ),
+                  child: const Center(
+                    child: Text(
+                      'Thêm chất dinh dưỡng',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ListView.builder(
@@ -198,10 +198,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
                       borderRadius: BorderRadius.circular(10),
                       // Thay đổi giá trị border radius tùy ý
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFFF5F6FA),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -210,20 +210,20 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    '${nutritionInfo.nutrition}',
-                                    style: TextStyle(
+                                    nutritionInfo.nutrition,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 5),
                                   child: Text(
-                                    '${nutritionInfo.nutritionAmount}',
-                                    style: TextStyle(
+                                    nutritionInfo.nutritionAmount,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepOrange,
@@ -237,7 +237,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                       removeNutritionInfo(
                                           index); // index là vị trí của phần tử trong danh sách
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.delete,
                                       color: Color(0xFF6B74D6),
                                       size: 25,
@@ -259,46 +259,46 @@ class _CreateRecipeState extends State<CreateRecipe> {
         Step(
           state: _activeStepIndex <= 2 ? StepState.indexed : StepState.complete,
           isActive: _activeStepIndex >= 2,
-          title: Text(''),
+          title: const Text(''),
           content: Column(
             children: [
-              Text(
+              const Text(
                 'Những nguyên liệu cần có',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Bổ xung các nguyên trọng tâm cho món ăn của bạn. Kèm theo số lượng của vât liệu cần thiết để món ăn của bạn trở nên tuyệt vời hơn.',
                 style: TextStyle(fontSize: 17, color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: ingredient,
                 decoration: InputDecoration(
                   hintText: 'Nhập nguyên liệu',
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                style: TextStyle(fontSize: 17, height: 2),
+                style: const TextStyle(fontSize: 17, height: 2),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: ingredientAmount,
                 decoration: InputDecoration(
                   hintText: 'Số lượng ex: 100 gam',
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                style: TextStyle(fontSize: 17, height: 2),
+                style: const TextStyle(fontSize: 17, height: 2),
               ),
-              SizedBox(height: 20),
-              Container(
+              const SizedBox(height: 20),
+              SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
@@ -317,12 +317,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     //load
                     setState(() {});
                   },
-                  child: Center(
-                    child: Text(
-                      'Thêm nguyên liệu',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith((states) {
                       return Colors.deepOrange;
@@ -333,9 +327,15 @@ class _CreateRecipeState extends State<CreateRecipe> {
                       ),
                     ),
                   ),
+                  child: const Center(
+                    child: Text(
+                      'Thêm nguyên liệu',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ListView.builder(
@@ -349,10 +349,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
                       borderRadius: BorderRadius.circular(10),
                       // Thay đổi giá trị border radius tùy ý
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFFF5F6FA),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -361,20 +361,20 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    '${ingredientInfo.ingredient}',
-                                    style: TextStyle(
+                                    ingredientInfo.ingredient,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 5),
                                   child: Text(
-                                    '${ingredientInfo.ingredientAmount}',
-                                    style: TextStyle(
+                                    ingredientInfo.ingredientAmount,
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.deepOrange,
@@ -388,7 +388,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                       removeIngredientInfo(
                                           index); // index là vị trí của phần tử trong danh sách
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.delete,
                                       color: Color(0xFF6B74D6),
                                       size: 25,
@@ -410,32 +410,32 @@ class _CreateRecipeState extends State<CreateRecipe> {
         Step(
           state: StepState.complete,
           isActive: _activeStepIndex >= 3,
-          title: Text(''),
+          title: const Text(''),
           content: Column(
             children: [
-              Text(
+              const Text(
                 'Các bước nấu ăn',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Đây là bước cuối cùng giúp món ăn bạn hướng dẫn đến người nấu theo công thức. Hãy ghi cẫn thận từng bước và lựa chọn câu từ phù hợp để người làm dễ dàng hình dung.',
                 style: TextStyle(fontSize: 17, color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: stepbystep,
                 decoration: InputDecoration(
                   hintText: 'Nhập bước',
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                style: TextStyle(fontSize: 17, height: 2),
+                style: const TextStyle(fontSize: 17, height: 2),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: TextFormField(
                   controller: stepbystepScript,
@@ -444,19 +444,19 @@ class _CreateRecipeState extends State<CreateRecipe> {
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     hintText: 'Nhập mô tả của bước...',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.grey,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 50, horizontal: 10),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Container(
+              const SizedBox(height: 20),
+              SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
@@ -472,15 +472,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     // Xóa nội dung của TextField sau khi lưu giá trị
                     stepbystep.clear();
                     stepbystepScript.clear();
+
                     //load
                     setState(() {});
                   },
-                  child: Center(
-                    child: Text(
-                      'Thêm nguyên liệu',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith((states) {
                       return Colors.deepOrange;
@@ -491,9 +486,15 @@ class _CreateRecipeState extends State<CreateRecipe> {
                       ),
                     ),
                   ),
+                  child: const Center(
+                    child: Text(
+                      'Thêm nguyên liệu',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ListView.builder(
@@ -505,7 +506,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Color(0xffC4C4C4),
+                          color: const Color(0xffC4C4C4),
                           borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         children: [
@@ -514,17 +515,17 @@ class _CreateRecipeState extends State<CreateRecipe> {
                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                   child: Text(
                                     stepByInfo.stepBy,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 21,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: GestureDetector(
@@ -532,7 +533,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                                     removeStepByStepInfo(
                                         index); // index là vị trí của phần tử trong danh sách
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.close,
                                     color: Colors.red,
                                     size: 25,
@@ -542,11 +543,11 @@ class _CreateRecipeState extends State<CreateRecipe> {
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             child: Text(
                               stepByInfo.stepAmount,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
                         ],
@@ -556,16 +557,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
                 },
               ),
               stepByList.isNotEmpty
-                  ? Container(
+                  ? SizedBox(
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: Center(
-                          child: Text(
-                            'Tạo món',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateColor.resolveWith((states) {
@@ -576,6 +571,19 @@ class _CreateRecipeState extends State<CreateRecipe> {
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
+                          ),
+                        ),
+                        child: Center(
+                          child: TextButton(
+                            child: const Text(
+                              'Tạo món',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () {
+                              debugPrint(title.text);
+                              debugPrint(script.text);
+                            },
                           ),
                         ),
                       ),
@@ -592,10 +600,10 @@ class _CreateRecipeState extends State<CreateRecipe> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Tạo món'),
+        title: const Text('Tạo món'),
         centerTitle: true,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20)),

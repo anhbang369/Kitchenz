@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstapp/items/user_image.dart';
 import 'package:firstapp/models/user_model.dart';
 import 'package:firstapp/service/api_service.dart';
@@ -51,12 +48,13 @@ class _ProfileState extends State<Profile> {
                 currentUser = snapshot.data;
                 return ListView(
                   children: [
-                    UserImage(onFileChanged: (imageUrl) {
-                      setState(() {
-                        this.imageUrl = imageUrl;
-                        print('url của ảnh: ${imageUrl}');
-                      });
-                    }),
+                    UserImage(
+                        imgeUrl: currentUser?.imageUrl,
+                        onFileChanged: (imageUrl) {
+                          setState(() {
+                            this.imageUrl = imageUrl;
+                          });
+                        }),
                     const SizedBox(
                       height: 30,
                     ),
@@ -171,7 +169,7 @@ class _ProfileState extends State<Profile> {
                             debugPrint('address: $address');
                             debugPrint('email: $email');
                             ApiService.updateUser(
-                                    username, email, address, phone)
+                                    username, email, address, phone, imageUrl)
                                 .then((value) => {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

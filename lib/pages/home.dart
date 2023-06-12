@@ -26,6 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String username = 'Anonymous';
   @override
   void initState() {
     super.initState();
@@ -48,6 +49,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      onDrawerChanged: (isOpened) {
+        ApiService.getCurrentUser().then((value) {
+          setState(() {
+            username = value!.username;
+          });
+        });
+      },
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -58,26 +66,24 @@ class _HomePageState extends State<HomePage> {
                   Colors.orangeAccent,
                 ]),
               ),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: FirebaseAuth.instance.currentUser?.photoURL != null
-                          ? Image.network(
-                              FirebaseAuth.instance.currentUser!.photoURL!,
-                              width: 100,
-                              height: 100,
-                            )
-                          : const Icon(Icons.person, size: 100),
-                    ),
-                    const Padding(padding: EdgeInsets.all(3)),
-                    Text(
-                      '${FirebaseAuth.instance.currentUser?.displayName ?? "Anonymous"}',
-                      style: const TextStyle(fontSize: 22, color: Colors.white),
-                    ),
-                  ],
-                ),
+              child: Column(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: FirebaseAuth.instance.currentUser?.photoURL != null
+                        ? Image.network(
+                            FirebaseAuth.instance.currentUser!.photoURL!,
+                            width: 100,
+                            height: 100,
+                          )
+                        : const Icon(Icons.person, size: 100),
+                  ),
+                  const Padding(padding: EdgeInsets.all(3)),
+                  Text(
+                    username,
+                    style: TextStyle(fontSize: 22, color: Colors.white),
+                  ),
+                ],
               ),
             ),
             CustomerListTitle(

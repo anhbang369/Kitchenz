@@ -324,14 +324,15 @@ class ApiService {
     }
   }
 
-  static Future<UserModel> updateUser(
-      String username, String email, String address, String phone) async {
+  static Future<UserModel> updateUser(String username, String email,
+      String address, String phone, String imageUrl) async {
     UserModel? user = await getCurrentUser();
     if (user != null) {
       if (username != '') user = user.copyWith(username: username);
       if (email != '') user = user.copyWith(email: email);
       if (address != '') user = user.copyWith(address: address);
       if (phone != '') user = user.copyWith(phone: phone);
+      if (imageUrl != '') user = user.copyWith(imageUrl: imageUrl);
       final response = await http.post(
         Uri.parse('$_baseUrl/user/update'),
         headers: <String, String>{

@@ -9,9 +9,11 @@ import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class UserImage extends StatefulWidget {
+  final String? imgeUrl;
   final Function(String imageUrl) onFileChanged;
 
-  UserImage({required this.onFileChanged});
+  const UserImage(
+      {super.key, required this.onFileChanged, required this.imgeUrl});
 
   @override
   State<UserImage> createState() => _UserImageState();
@@ -43,7 +45,7 @@ class _UserImageState extends State<UserImage> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
+                      image: NetworkImage(widget.imgeUrl ??
                           'https://qpe.co.in/assets/tools/img/choose_img.png'),
                     ),
                   ),
@@ -64,7 +66,7 @@ class _UserImageState extends State<UserImage> {
                         ),
                         color: Colors.deepOrange,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.edit,
                         color: Colors.white,
                       ),
@@ -92,7 +94,7 @@ class _UserImageState extends State<UserImage> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage('${imageUrl}'),
+                      image: NetworkImage('$imageUrl'),
                     ),
                   ),
                 ),
@@ -112,7 +114,7 @@ class _UserImageState extends State<UserImage> {
                         ),
                         color: Colors.deepOrange,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.edit,
                         color: Colors.white,
                       ),
@@ -134,16 +136,16 @@ class _UserImageState extends State<UserImage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.camera),
-                    title: Text('Camera'),
+                    leading: const Icon(Icons.camera),
+                    title: const Text('Camera'),
                     onTap: () {
                       Navigator.of(context).pop();
                       _pickImage(ImageSource.camera);
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.camera),
-                    title: Text('Chọn ảnh'),
+                    leading: const Icon(Icons.camera),
+                    title: const Text('Chọn ảnh'),
                     onTap: () {
                       Navigator.of(context).pop();
                       _pickImage(ImageSource.gallery);
@@ -165,7 +167,7 @@ class _UserImageState extends State<UserImage> {
     var imageCropper = ImageCropper();
     var file = await imageCropper.cropImage(
       sourcePath: pickedFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
     );
 
     if (file == null) {
@@ -192,7 +194,7 @@ class _UserImageState extends State<UserImage> {
     final ref = storage.FirebaseStorage.instance
         .ref()
         .child('images')
-        .child('${DateTime.now().toIso8601String() + p.basename(path)}');
+        .child(DateTime.now().toIso8601String() + p.basename(path));
 
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
